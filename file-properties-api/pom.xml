@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>pdf-manager-app</artifactId>
+        <groupId>org.jkdev</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>file-properties-api</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.swagger.codegen.v3</groupId>
+            <artifactId>swagger-codegen</artifactId>
+            <version>3.0.24</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+    </dependencies>
+    <build>
+    <plugins>
+        <plugin>
+            <groupId>org.openapitools</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <version>5.0.0</version>
+            <executions>
+                <execution>
+                    <id>server-code-generation</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                    <configuration>
+                        <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+                        <generatorName>java</generatorName>
+                        <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+                        <generatorName>java</generatorName>
+                        <generateSupportingFiles>false</generateSupportingFiles>
+                        <generateApiDocumentation>true</generateApiDocumentation>
+                        <generateModelDocumentation>true</generateModelDocumentation>
+                        <generateApis>false</generateApis>
+                        <generateModels>true</generateModels>
+                        <generateApiTests>false</generateApiTests>
+                        <generateModelTests>false</generateModelTests>
+                        <withXml>false</withXml>
+                        <configOptions>
+                            <interfaceOnly>true</interfaceOnly>
+                            <sourceFolder>src/main/java</sourceFolder>
+                            <java8>true</java8>
+                            <dateLibrary>java8</dateLibrary>
+                            <useBeanValidation>true</useBeanValidation>
+                            <returnResponse>true</returnResponse>
+                            <modelPackage>org.jkdev.file.properties.api</modelPackage>
+                            <apiPackage>org.jkdev.file.properties.api</apiPackage>
+                        </configOptions>
+                        <library>resteasy</library>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+    </build>
+</project>
