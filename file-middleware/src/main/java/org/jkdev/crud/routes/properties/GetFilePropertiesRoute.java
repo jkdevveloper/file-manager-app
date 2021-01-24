@@ -18,7 +18,7 @@ public class GetFilePropertiesRoute extends RouteBuilder {
                 .id("getFilePropertiesRoute")
                 .removeHeaders("CamelHttp*")
                 .doTry()
-                    .toD("http://localhost:8082/properties-service/get-file-properties?fileName=${header.fileName}&fileOwner=${header.owner}")
+                    .toD("http://localhost:8082/properties-service/get-file-properties?fileOwner=${header.owner}")
                 .endDoTry()
                 .doCatch(HttpOperationFailedException.class)
                     .log("getting file properties failed")

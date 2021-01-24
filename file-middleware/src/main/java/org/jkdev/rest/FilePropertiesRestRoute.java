@@ -11,14 +11,14 @@ import javax.enterprise.context.ApplicationScoped;
 public class FilePropertiesRestRoute extends RouteBuilder {
 
     private static final String GET_FILE_PROPERTIES_REST_ROUTE = "/getFileProperties";
+    private static final String BASE_PATH = "fileproperties";
     private static final String GET_FILE_PROPERTIES_REST_ROUTE_ID = "getPDFPropertiesRESTRoute";
 
     @Override
     public void configure() throws Exception {
 
-        rest().get(GET_FILE_PROPERTIES_REST_ROUTE)
+        rest(BASE_PATH).get(GET_FILE_PROPERTIES_REST_ROUTE)
                 .id(GET_FILE_PROPERTIES_REST_ROUTE_ID)
-                .param().name("fileName").endParam()
                 .param().name("owner").endParam()
                 .route()
                 .to(GetFilePropertiesRoute.GET_FILE_PROPERTIES)

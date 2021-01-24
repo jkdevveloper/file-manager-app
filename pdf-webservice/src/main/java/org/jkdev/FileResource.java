@@ -2,12 +2,16 @@ package org.jkdev;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 import org.apache.pdfbox.io.IOUtils;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.jkdev.client.FileClient;
+import org.jkdev.client.FilePropertiesClient;
+import org.jkdev.file.properties.api.FilePropertiesDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +19,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -33,12 +38,20 @@ public class FileResource {
     @RestClient
     FileClient fileClient;
 
+    @Inject
+    @RestClient
+    FilePropertiesClient filePropertiesClient;
+
+    @Inject
+    Template files;
+
     ObjectMapper objectMapper = new ObjectMapper().registerModules(new Jdk8Module());
 
     @POST
     @Path("sendFile")
     @Consumes({MediaType.MULTIPART_FORM_DATA})
-    public Response getFileAndSendViaREST(@MultipartForm MultipartFormDataInput upload) {
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance getFileAndSendViaREST(@MultipartForm MultipartFormDataInput upload) {
         Map<String, List<InputPart>> uploadForm = upload.getFormDataMap();
         List<String> fileNames = new ArrayList<>();
 
@@ -70,7 +83,11 @@ public class FileResource {
                 e.printStackTrace();
             }
         }
-        return Response.ok().build();
+        List<FilePropertiesDTO> filePropertiesDTOS = filePropertiesClient.getFileProperties("Jakub");
+
+        logger.info("Properties: {}", filePropertiesDTOS);
+
+        return files.data("files", filePropertiesDTOS);
     }
 
     private String getFileName(MultivaluedMap<String, String> header) {
