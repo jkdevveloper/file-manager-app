@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
+import io.quarkus.security.identity.SecurityIdentity;
 import org.apache.pdfbox.io.IOUtils;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
@@ -11,25 +12,22 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.jkdev.client.FileClient;
 import org.jkdev.client.FilePropertiesClient;
+import org.jkdev.entity.PDFContent;
 import org.jkdev.file.properties.api.FilePropertiesDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-@Path("files")
+@Path("")
 public class FileResource {
 
     Logger logger = LoggerFactory.getLogger(FileResource.class);
@@ -37,6 +35,9 @@ public class FileResource {
     @Inject
     @RestClient
     FileClient fileClient;
+
+    @Inject
+    SecurityIdentity userInfo;
 
     @Inject
     @RestClient
@@ -48,7 +49,7 @@ public class FileResource {
     ObjectMapper objectMapper = new ObjectMapper().registerModules(new Jdk8Module());
 
     @POST
-    @Path("sendFile")
+    @Path("files/sendFile")
     @Consumes({MediaType.MULTIPART_FORM_DATA})
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getFileAndSendViaREST(@MultipartForm MultipartFormDataInput upload) {
@@ -87,7 +88,7 @@ public class FileResource {
 
         logger.info("Properties: {}", filePropertiesDTOS);
 
-        return files.data("files", filePropertiesDTOS);
+        return files.data("files", filePropertiesDTOS).data("username", userInfo.getPrincipal().getName());
     }
 
     private String getFileName(MultivaluedMap<String, String> header) {
@@ -102,4 +103,11 @@ public class FileResource {
         return "unknown";
     }
 
+    @GET
+    @Path("files")
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get() {
+        return files.data("files", filePropertiesClient.getFileProperties("Jakub"))
+                .data("username", userInfo.getPrincipal().getName());
+    }
 }
