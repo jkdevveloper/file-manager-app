@@ -1,4 +1,4 @@
-package org.jkdev;
+package org.jkdev.crud;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -22,10 +22,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Path("")
 public class FileResource {
@@ -64,7 +61,6 @@ public class FileResource {
 
         for (InputPart inputPart : inputParts) {
             try {
-
                 MultivaluedMap<String, String> header = inputPart.getHeaders();
                 fileName = getFileName(header);
                 InputStream inputStream = inputPart.getBody(InputStream.class, null);
@@ -75,20 +71,22 @@ public class FileResource {
                 PDFContent pdfContent = new PDFContent();
                 pdfContent.setContent(fileData);
                 pdfContent.setFileName(fileName);
-                pdfContent.setOwner("Jakub");
+                pdfContent.setOwner(userInfo.getPrincipal().getName());
                 pdfContent.setContentType("PDF");
 
                 fileClient.sendFile(objectMapper.writeValueAsString(pdfContent));
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        List<FilePropertiesDTO> filePropertiesDTOS = filePropertiesClient.getFileProperties("Jakub");
+        List<FilePropertiesDTO> filePropertiesDTOS = Collections.emptyList();
+        try {
+            filePropertiesDTOS = filePropertiesClient.getFileProperties(userInfo.getPrincipal().getName());
+        } catch (Exception exception){
+            logger.error("Exception during properties querying");
+        }
 
-        logger.info("Properties: {}", filePropertiesDTOS);
-
-        return files.data("files", filePropertiesDTOS).data("username", userInfo.getPrincipal().getName());
+        return files.data("files", filePropertiesDTOS, "username", userInfo.getPrincipal().getName());
     }
 
     private String getFileName(MultivaluedMap<String, String> header) {
@@ -107,7 +105,13 @@ public class FileResource {
     @Path("files")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get() {
-        return files.data("files", filePropertiesClient.getFileProperties("Jakub"))
-                .data("username", userInfo.getPrincipal().getName());
+        List<FilePropertiesDTO> filePropertiesDTOS = Collections.emptyList();
+        try {
+            filePropertiesDTOS = filePropertiesClient.getFileProperties(userInfo.getPrincipal().getName());
+        } catch (Exception exception){
+            logger.error("Exception during properties querying");
+        }
+
+        return files.data("files", filePropertiesDTOS, "username", userInfo.getPrincipal().getName());
     }
 }

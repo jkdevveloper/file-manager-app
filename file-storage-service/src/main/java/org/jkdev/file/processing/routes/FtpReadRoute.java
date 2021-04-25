@@ -21,7 +21,7 @@ public class FtpReadRoute extends RouteBuilder {
 
         from(GET_FILE_FROM_FTP)
                 .id("getFileFromFtpServerRoute")
-                //.pollEnrich("ftp://test@localhost:21/?password=test&passiveMode=true&fileName=${header.fileOwner}/${header.fileIdentifier}")
+                .pollEnrich("ftp://test@localhost:21/?password=test&passiveMode=true&fileName=${header.fileOwner}/${header.fileIdentifier}")
                 .log("${body}")
                 .marshal().json(JsonLibrary.Jackson, FileStorageDTO.class)
                 .log("Getting file from ftp server");

@@ -10,8 +10,7 @@ import org.jkdev.file.storage.api.FileStorageDTO;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class FtpRoute extends RouteBuilder {
-
+public class FileRouter extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {

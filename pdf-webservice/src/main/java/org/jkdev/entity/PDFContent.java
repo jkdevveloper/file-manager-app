@@ -1,4 +1,4 @@
-package org.jkdev;
+package org.jkdev.entity;
 
 public class PDFContent {
 

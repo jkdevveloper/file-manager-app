@@ -1,4 +1,4 @@
-package org.jkdev.file.processing.converting;
+package org.jkdev.file.processing.conversion;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;

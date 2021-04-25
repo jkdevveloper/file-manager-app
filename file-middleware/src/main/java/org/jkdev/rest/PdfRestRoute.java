@@ -72,7 +72,5 @@ public class PdfRestRoute extends RouteBuilder {
                     .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("500"))
                 .end()
         .endRest();
-
-
     }
 }
