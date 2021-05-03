@@ -15,6 +15,7 @@ public class DeleteFileRoute extends RouteBuilder {
         from(DELETE_PDF)
                 .id("deleteFileRoute")
                 .setHeader("operation", simple("delete"))
-                .to("kafka:test?brokers=localhost:9091");
+                .removeHeaders("CamelHttp*")
+                .to("http://localhost:8081/storage-service/modify-file");
     }
 }

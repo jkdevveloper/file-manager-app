@@ -51,13 +51,12 @@ public class FileResource {
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getFileAndSendViaREST(@MultipartForm MultipartFormDataInput upload) {
         Map<String, List<InputPart>> uploadForm = upload.getFormDataMap();
-        List<String> fileNames = new ArrayList<>();
 
         List<InputPart> inputParts = uploadForm.get("file");
 
         logger.info("Files count:{}", inputParts.size());
 
-        String fileName = null;
+        String fileName;
 
         for (InputPart inputPart : inputParts) {
             try {
@@ -94,8 +93,7 @@ public class FileResource {
         for (String filename : contentDisposition) {
             if ((filename.trim().startsWith("filename"))) {
                 String[] name = filename.split("=");
-                String finalFileName = name[1].trim().replaceAll("\"", "");
-                return finalFileName;
+                return name[1].trim().replaceAll("\"", "");
             }
         }
         return "unknown";

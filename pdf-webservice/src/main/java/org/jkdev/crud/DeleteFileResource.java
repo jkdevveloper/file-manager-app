@@ -4,7 +4,6 @@ import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.identity.SecurityIdentity;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.resteasy.annotations.Query;
 import org.jkdev.client.FileClient;
 import org.jkdev.client.FilePropertiesClient;
 import org.jkdev.file.properties.api.FilePropertiesDTO;
@@ -38,7 +37,6 @@ public class DeleteFileResource {
 
     Logger logger = LoggerFactory.getLogger(DeleteFileResource.class);
 
-
     @GET
     @Path("delete")
     @Produces(MediaType.TEXT_HTML)
@@ -47,6 +45,7 @@ public class DeleteFileResource {
         fileClient.deleteFile(id, fileIdentifier, userInfo.getPrincipal().getName());
 
         List<FilePropertiesDTO> filePropertiesDTOS = Collections.emptyList();
+
         try {
             filePropertiesDTOS = filePropertiesClient.getFileProperties(userInfo.getPrincipal().getName());
         } catch (Exception exception){

@@ -19,7 +19,7 @@ public class FtpSaveRoute extends RouteBuilder {
     PDFConverter pdfConverter;
 
     @Override
-    public void configure() throws Exception {
+    public void configure() {
 
         from(SAVE_FILE_TO_FTP)
                 .id("saveFileToFtpServerRoute")
@@ -28,9 +28,10 @@ public class FtpSaveRoute extends RouteBuilder {
                         .process(imageConverter)
                     .otherwise()
                         .process(pdfConverter)
-                .endChoice()
+                .end()
                 // TODO error handling
-                .to("ftp://test@localhost:21/?password=test&passiveMode=true&binary=true&fileName=${header.fileOwner}/${header.fileIdentifier}")
+                .log("${headers}")
+                .to("ftp://test@localhost:21/?password=test&passiveMode=true&binary=true&fileName=${header.fileOwner}/${header.fileIdentifier}&disconnect=true")
                 .log("Saved file to ftp server");
 
     }

@@ -10,6 +10,7 @@ import org.jkdev.crud.routes.properties.DeleteFilePropertiesRoute;
 import org.jkdev.crud.routes.properties.GetFilePropertiesRoute;
 import org.jkdev.crud.routes.properties.SaveFilePropertiesRoute;
 import org.jkdev.entity.PDFContent;
+import org.jkdev.file.storage.api.FileStorageDTO;
 
 import javax.ws.rs.core.MediaType;
 
@@ -66,8 +67,11 @@ public class PdfRestRoute extends RouteBuilder {
                 .route()
                 .doTry()
                     .to(GetFileRoute.GET_PDF)
+                    .marshal().json(JsonLibrary.Jackson, FileStorageDTO.class)
+                    // TODO MAP TO PDFContent object
                 .endDoTry()
                 .doCatch(Exception.class)
+                    .log("ERROR KURWA ERROR")
                     .setBody().constant("Error getting pdf")
                     .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("500"))
                 .end()

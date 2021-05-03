@@ -32,7 +32,7 @@ public class FilePropertiesServiceImpl implements FilePropertiesService {
             filePropertiesDAO.saveFileProperties(entityToDTOMapper.mapDTOtoEntity(filePropertiesDTO));
         } catch (Exception e) {
             logger.error("Failed to save provided file properties entity: {}", filePropertiesDTO);
-            throw new WebApplicationException("Failed to save provided file properties entity", Response.Status.NOT_ACCEPTABLE);
+            //throw new WebApplicationException("Failed to save provided file properties entity", Response.Status.NOT_ACCEPTABLE);
         }
     }
 
@@ -43,14 +43,18 @@ public class FilePropertiesServiceImpl implements FilePropertiesService {
 
     @Override
     public List<FilePropertiesDTO> getFileProperties(String fileName, String fileOwner, String dateUploaded, String fileIdentifier) {
+        logger.info("Received request to get properties with parameters: {}, {}, {}, {}", fileName, fileOwner, dateUploaded, fileIdentifier);
         List<FileProperties> filePropertiesList = filePropertiesDAO.getFilePropertiesByFilters(fileName, fileOwner, dateUploaded, fileIdentifier);
 
         if (filePropertiesList.size() > 0) {
+            logger.info(String.valueOf(filePropertiesList));
             return entityToDTOMapper.mapFilePropertiesToDTOS(filePropertiesList);
+
         } else {
             logger.error("Could not fetch file properties for provided filter parameters" +
                     " fileName: {}, fileOwner: {}, dateUploaded: {}, fileIdentifier: {}", fileName, fileOwner, dateUploaded, fileIdentifier);
-            throw new WebApplicationException("Could not fetch file properties for provided parameters", Response.Status.NOT_FOUND);
+            return null;
+            //throw new WebApplicationException("Could not fetch file properties for provided parameters", Response.Status.NOT_FOUND);
         }
     }
 
@@ -70,7 +74,7 @@ public class FilePropertiesServiceImpl implements FilePropertiesService {
         try {
             filePropertiesDAO.updateFileProperties(entityToDTOMapper.mapDTOtoEntity(filePropertiesDTO));
         } catch (Exception e){
-            throw new WebApplicationException("Could not update provided entity", Response.Status.NOT_ACCEPTABLE);
+            //throw new WebApplicationException("Could not update provided entity", Response.Status.NOT_ACCEPTABLE);
         }
     }
 }

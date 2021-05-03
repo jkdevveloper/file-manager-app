@@ -63,7 +63,7 @@
         <tr>
             <td>{it.fileName}</td>
             <td>{it.dateUploaded}</td>
-            <td><a href="/download?id={it.id}" download target="_blank" class="fas fa-download" style="color:black;"></a></td>
+            <td><a href="/download?id={it.id}&fileName={it.fileName}" download target="_blank" class="fas fa-download" style="color:black;"></a></td>
             <td><a href="/delete?id={it.id}&fileIdentifier={it.fileIdentifier}" class="fas fa-trash" style="color:black;"></a></td>
         </tr>
         {/each}

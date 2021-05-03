@@ -1,12 +1,7 @@
 package org.jkdev.crud.routes.properties;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.jackson.ListJacksonDataFormat;
 import org.apache.camel.http.base.HttpOperationFailedException;
-import org.apache.camel.model.dataformat.JsonLibrary;
-import org.jkdev.file.properties.api.FilePropertiesDTO;
-
-import java.util.List;
 
 public class GetFilePropertiesRoute extends RouteBuilder {
 

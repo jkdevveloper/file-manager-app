@@ -16,10 +16,10 @@ public class FtpFileRemover implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         String fileIdentifier = exchange.getIn().getHeader("fileIdentifier", String.class);
-        //String fileOwner = exchange.getIn().getHeader("fileOwner", String.class);
+        String fileOwner = exchange.getIn().getHeader("fileOwner", String.class);
 
         Exchange exchange1 = consumerTemplate
-                .receive("ftp://test@localhost:21/home/test?password=test&useList=false&passiveMode=true&stepwise=true&fileName=" + fileIdentifier + "&delete=true");
+                .receive("ftp://test@172.22.0.2:21/" + fileOwner + "/?password=test&useList=false&passiveMode=true&stepwise=true&fileName=" + fileOwner + "/" + fileIdentifier + "&delete=true");
         System.out.println(exchange1);
     }
 }

@@ -12,7 +12,7 @@ public class FtpDeleteRoute extends RouteBuilder {
     public static final String DELETE_FILE_FROM_FTP = "direct:deleteFileFromFtpServer";
 
     @Inject
-    private FtpFileRemover ftpFileRemover;
+    FtpFileRemover ftpFileRemover;
 
     @Override
     public void configure() throws Exception {
@@ -20,8 +20,7 @@ public class FtpDeleteRoute extends RouteBuilder {
                 .id("deleteFileFromFtpServerRoute")
                 // error handling
                 .log("Deleting file: ${header.fileIdentifier}")
-                //.pollEnrich("ftp://test@localhost:21/?password=test&passiveMode=true&fileName=${header.fileOwner}/${header.fileIdentifier}&delete=true")
-
+                .pollEnrich("ftp://test@localhost:21/?password=test&passiveMode=true&fileName=${header.fileOwner}/${header.fileIdentifier}&delete=true")
                 .log("Deleted file ${header.fileIdentifier}");
     }
 }

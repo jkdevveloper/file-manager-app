@@ -24,6 +24,6 @@ public interface FileClient {
 
     @GET
     @Path("/getPDF")
-    PDFContent getFile(@QueryParam("owner") String id, @QueryParam("fileName") String fileIdentifier);
+    PDFContent getFile(@QueryParam("owner") String owner, @QueryParam("fileName") String fileName);
 
 }

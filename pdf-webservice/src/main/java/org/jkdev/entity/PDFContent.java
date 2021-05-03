@@ -43,7 +43,7 @@ public class PDFContent {
     public String toString() {
         return "PDFContent{" +
                 "fileName='" + fileName + '\'' +
-                ", content='" + content + '\'' +
+                "fileOwner='" + owner + '\'' +
                 ", contentType=" + contentType +
                 '}';
     }
