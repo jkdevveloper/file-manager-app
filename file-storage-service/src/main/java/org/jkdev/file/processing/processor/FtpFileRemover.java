@@ -10,16 +10,16 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class FtpFileRemover implements Processor {
 
-    @Inject
-    private ConsumerTemplate consumerTemplate;
+//    @Inject
+//    private ConsumerTemplate consumerTemplate;
 
     @Override
-    public void process(Exchange exchange) throws Exception {
+    public void process(Exchange exchange) {
+        ConsumerTemplate consumerTemplate= exchange.getContext().createConsumerTemplate();
         String fileIdentifier = exchange.getIn().getHeader("fileIdentifier", String.class);
         String fileOwner = exchange.getIn().getHeader("fileOwner", String.class);
 
-        Exchange exchange1 = consumerTemplate
-                .receive("ftp://test@172.22.0.2:21/" + fileOwner + "/?password=test&useList=false&passiveMode=true&stepwise=true&fileName=" + fileOwner + "/" + fileIdentifier + "&delete=true");
-        System.out.println(exchange1);
+        consumerTemplate
+                .receive("ftp://test@127.0.0.1:21/?password=test&useList=false&synchronous=true&passiveMode=true&stepwise=true&fileName=" + fileOwner + "/" + fileIdentifier + "&delete=true");
     }
 }

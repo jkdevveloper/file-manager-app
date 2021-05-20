@@ -16,6 +16,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 @ApplicationScoped
 @Path("")
@@ -48,10 +50,11 @@ public class DownloadFileResource {
 
 
         String home = System.getProperty("user.home");
-        File file = new File(home + "/Downloads/" + pdfContent.getFileName() + "." + pdfContent.getContentType());
+        File file = new File(home + "/Pobrane/" + pdfContent.getFileName());
+        Base64.Decoder base64Encoder = Base64.getDecoder();
 
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            byte[] decoded = java.util.Base64.getDecoder().decode(pdfContent.getContent());
+            byte[] decoded = base64Encoder.decode(pdfContent.getContent());
             fos.write(decoded);
         } catch (Exception e) {
             e.printStackTrace();

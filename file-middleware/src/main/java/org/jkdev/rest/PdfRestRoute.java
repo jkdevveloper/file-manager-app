@@ -11,9 +11,13 @@ import org.jkdev.crud.routes.properties.GetFilePropertiesRoute;
 import org.jkdev.crud.routes.properties.SaveFilePropertiesRoute;
 import org.jkdev.entity.PDFContent;
 import org.jkdev.file.storage.api.FileStorageDTO;
+import org.jkdev.mapper.EntityMapper;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
+@ApplicationScoped
 public class PdfRestRoute extends RouteBuilder {
 
     private static final String BASE_PATH = "/files";
@@ -24,6 +28,9 @@ public class PdfRestRoute extends RouteBuilder {
     private static final String DELETE_FILE_ROUTE_ID = "deletePDFRESTRoute";
     private static final String SEND_FILE_ROUTE_ID = "sendPDFRESTRoute";
     private static final String GET_FILE_ROUTE_ID = "getPDFRESTRoute";
+
+    @Inject
+    EntityMapper entityMapper;
 
     @Override
     public void configure() {
@@ -67,12 +74,12 @@ public class PdfRestRoute extends RouteBuilder {
                 .route()
                 .doTry()
                     .to(GetFileRoute.GET_PDF)
-                    .marshal().json(JsonLibrary.Jackson, FileStorageDTO.class)
+                    .process(entityMapper)
+                    .marshal().json(JsonLibrary.Jackson, PDFContent.class)
                     // TODO MAP TO PDFContent object
                 .endDoTry()
                 .doCatch(Exception.class)
                     .log("ERROR KURWA ERROR")
-                    .setBody().constant("Error getting pdf")
                     .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("500"))
                 .end()
         .endRest();

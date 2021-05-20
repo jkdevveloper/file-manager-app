@@ -20,7 +20,7 @@ public class FtpDeleteRoute extends RouteBuilder {
                 .id("deleteFileFromFtpServerRoute")
                 // error handling
                 .log("Deleting file: ${header.fileIdentifier}")
-                .pollEnrich("ftp://test@localhost:21/?password=test&passiveMode=true&fileName=${header.fileOwner}/${header.fileIdentifier}&delete=true")
+                .process(ftpFileRemover)
                 .log("Deleted file ${header.fileIdentifier}");
     }
 }
