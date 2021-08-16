@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @ApplicationScoped
-public class FilePropertiesServiceImpl implements FilePropertiesService {
+class FilePropertiesServiceImpl implements FilePropertiesService {
 
     @Inject
     FilePropertiesDAO filePropertiesDAO;
@@ -37,8 +37,8 @@ public class FilePropertiesServiceImpl implements FilePropertiesService {
     }
 
     @Override
-    public void deleteFilePropertiesById(Long id) {
-        filePropertiesDAO.deleteFilePropertiesById(id);
+    public void deleteFileProperties(String fileIdentifier, String fileOwner) {
+        filePropertiesDAO.deleteFileProperties(fileIdentifier, fileOwner);
     }
 
     @Override

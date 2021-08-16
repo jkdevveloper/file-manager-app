@@ -8,7 +8,7 @@ public interface FilePropertiesDAO {
 
     void saveFileProperties(FileProperties fileProperties);
 
-    void deleteFilePropertiesById(Long id);
+    void deleteFileProperties(String fileIdentifier, String fileOwner);
 
     List<FileProperties> getFilePropertiesById(String id);
 

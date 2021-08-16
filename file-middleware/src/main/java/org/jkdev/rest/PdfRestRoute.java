@@ -7,10 +7,7 @@ import org.jkdev.crud.routes.file.DeleteFileRoute;
 import org.jkdev.crud.routes.file.GetFileRoute;
 import org.jkdev.crud.routes.file.SaveFileRoute;
 import org.jkdev.crud.routes.properties.DeleteFilePropertiesRoute;
-import org.jkdev.crud.routes.properties.GetFilePropertiesRoute;
-import org.jkdev.crud.routes.properties.SaveFilePropertiesRoute;
-import org.jkdev.entity.PDFContent;
-import org.jkdev.file.storage.api.FileStorageDTO;
+import org.jkdev.entity.MiddlewareFileContent;
 import org.jkdev.mapper.EntityMapper;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -36,18 +33,18 @@ public class PdfRestRoute extends RouteBuilder {
     public void configure() {
 
         rest(BASE_PATH).delete(DELETE_FILE)
-                .param().name("id").required(true).endParam()
                 .param().name("fileIdentifier").required(true).endParam()
                 .param().name("fileOwner").required(true).endParam()
                 .produces(MediaType.APPLICATION_JSON)
                 .id(DELETE_FILE_ROUTE_ID)
                 .route()
+                .log("Requesting to delete file with data: ${headers}")
                     .doTry()
                         .to(DeleteFilePropertiesRoute.DELETE_FILE_PROPERTIES_ROUTE)
                         .to(DeleteFileRoute.DELETE_PDF)
                     .endDoTry()
                     .doCatch(Exception.class)
-                        .setBody().constant("Error deleting pdf")
+                        .log("Error deleting pdf, fileIdentifier: ${header.fileIdentifier}, fileOwner: ${header.fileOwner}")
                         .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("500"))
                     .end()
         .endRest();
@@ -56,7 +53,7 @@ public class PdfRestRoute extends RouteBuilder {
                 .consumes(MediaType.APPLICATION_JSON)
                 .id(SEND_FILE_ROUTE_ID)
                 .route()
-                    .unmarshal().json(JsonLibrary.Jackson, PDFContent.class)
+                    .unmarshal().json(JsonLibrary.Jackson, MiddlewareFileContent.class)
                     .doTry()
                         .to(SaveFileRoute.SAVE_PDF)
                     .endDoTry()
@@ -75,11 +72,10 @@ public class PdfRestRoute extends RouteBuilder {
                 .doTry()
                     .to(GetFileRoute.GET_PDF)
                     .process(entityMapper)
-                    .marshal().json(JsonLibrary.Jackson, PDFContent.class)
-                    // TODO MAP TO PDFContent object
+                    .marshal().json(JsonLibrary.Jackson, MiddlewareFileContent.class)
                 .endDoTry()
                 .doCatch(Exception.class)
-                    .log("ERROR KURWA ERROR")
+                    .log("Error occurred during file fetching, fileName: ${header.fileName}, fileOwner: ${header.owner}")
                     .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("500"))
                 .end()
         .endRest();

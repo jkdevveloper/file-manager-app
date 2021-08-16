@@ -13,12 +13,10 @@ import java.util.List;
 import java.util.Objects;
 
 @ApplicationScoped
-public class FilePropertiesDAOImpl implements FilePropertiesDAO {
-
-    // all the database stuff
+class FilePropertiesDAOImpl implements FilePropertiesDAO {
 
     @Inject
-    private EntityManager em;
+    EntityManager em;
 
     @Override
     @Transactional
@@ -28,8 +26,8 @@ public class FilePropertiesDAOImpl implements FilePropertiesDAO {
 
     @Override
     @Transactional
-    public void deleteFilePropertiesById(Long id) {
-        em.createQuery("delete FileProperties where id = :id").setParameter("id", id).executeUpdate();
+    public void deleteFileProperties(String fileIdentifier, String fileOwner) {
+        em.createQuery("delete from FileProperties where fileIdentifier = :fileIdentifier and fileOwner = :fileOwner").setParameter("fileIdentifier", fileIdentifier).setParameter("fileOwner", fileOwner).executeUpdate();
     }
 
     @Override

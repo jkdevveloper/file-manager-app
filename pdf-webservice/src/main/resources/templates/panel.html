@@ -15,15 +15,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="shortcut icon" href="#">
     <title>PDF Manager Upload Panel</title>
-    <script>
-        console.log("script loads");
-        $('#file').change(function() {
-        var i = $(this).prev('label').clone();
-        var file = $('#file')[0].files[0].name;
-        console.log(file);
-        $(this).prev('label').text(file);
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-filestyle/2.1.0/bootstrap-filestyle.min.js" integrity="sha512-HfRdzrvve5p31VKjxBhIaDhBqreRXt4SX3i3Iv7bhuoeJY47gJtFTRWKUpjk8RUkLtKZUhf87ONcKONAROhvIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <html>
 <body>
@@ -56,20 +48,25 @@
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Upload your files</h1>
-        <p class="lead">Upload PDF file, or images to convert them into single PDF</p>
+        <p class="lead">Easily upload files to store on remote server</p>
         <hr class="my-4">
     </div>
 </div>
 <div class="container">
     <div class="custom-file">
+
+
         <form action="/files/sendFile" method="POST" enctype="multipart/form-data">
-            <label class="custom-file-label" for="file">Choose file.</label>
-            <input type="file" class="custom-file-input" id="file" name="file" required>
+            <input type="file" data-classIcon="icon-plus" class="filestyle" data-input="false" id="file" name="file" data-buttonText="Browse" required>
             <button class="btn btn-primary">Upload file</button>
+
+            <p>To upload file click 'Choose file', browse for a file you want to upload and then click "Upload file" button, after successful upload you will be redirected to your uploaded files list</p>
         </form>
     </div>
 </div>
 
 </body>
-
+{|<script>
+    $(":file").filestyle();
+</script>|}
 </html>

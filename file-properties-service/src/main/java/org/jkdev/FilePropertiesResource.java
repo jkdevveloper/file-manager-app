@@ -20,7 +20,7 @@ public class FilePropertiesResource {
     private static final String DELETE_FILE_PROPERTIES = "delete-file-properties";
 
     @Inject
-    private FilePropertiesService filePropertiesService;
+    FilePropertiesService filePropertiesService;
 
     private static final Logger logger = LoggerFactory.getLogger(FilePropertiesResource.class);
 
@@ -57,9 +57,9 @@ public class FilePropertiesResource {
     @DELETE
     @Path(DELETE_FILE_PROPERTIES)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteFileProperties(@QueryParam("id") Long id) {
-        logger.debug("Received request to DELETE by id: {}", id);
-        filePropertiesService.deleteFilePropertiesById(id);
+    public Response deleteFileProperties(@QueryParam("fileIdentifier") String fileIdentifier, @QueryParam("fileOwner") String fileOwner) {
+
+        filePropertiesService.deleteFileProperties(fileIdentifier, fileOwner);
 
         return Response.ok().build();
     }

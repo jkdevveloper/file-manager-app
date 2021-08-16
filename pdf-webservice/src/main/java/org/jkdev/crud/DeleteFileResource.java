@@ -40,9 +40,9 @@ public class DeleteFileResource {
     @GET
     @Path("delete")
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance deleteFile(@QueryParam("id") String id, @QueryParam("fileIdentifier") String fileIdentifier){
+    public TemplateInstance deleteFile(@QueryParam("fileOwner") String fileOwner, @QueryParam("fileIdentifier") String fileIdentifier){
 
-        fileClient.deleteFile(id, fileIdentifier, userInfo.getPrincipal().getName());
+        fileClient.deleteFile(fileOwner, fileIdentifier);
 
         List<FilePropertiesDTO> filePropertiesDTOS = Collections.emptyList();
 

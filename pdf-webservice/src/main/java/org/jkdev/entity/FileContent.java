@@ -1,10 +1,10 @@
 package org.jkdev.entity;
 
-public class PDFContent {
+public class FileContent {
 
     private String fileName;
     private String content;
-    private ContentType contentType;
+    private String contentType;
     private String owner;
 
     public String getOwner() {
@@ -31,20 +31,21 @@ public class PDFContent {
         this.content = content;
     }
 
-    public ContentType getContentType() {
+    public String getContentType() {
         return contentType;
     }
 
-    public void setContentType(ContentType contentType) {
+    public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
     @Override
     public String toString() {
-        return "PDFContent{" +
+        return "FileContent{" +
                 "fileName='" + fileName + '\'' +
-                ", content='" + content + '\'' +
+                "fileOwner='" + owner + '\'' +
                 ", contentType=" + contentType +
                 '}';
     }
 }
+

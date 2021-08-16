@@ -18,10 +18,10 @@ public class SaveFileRoute extends RouteBuilder {
     public static final String SAVE_PDF = "direct:saveFile";
 
     @Inject
-    private FileStorageDTOBuilder fileStorageDTOBuilder;
+    FileStorageDTOBuilder fileStorageDTOBuilder;
 
     @Inject
-    private FilePropertiesDTOBuilder filePropertiesDTOBuilder;
+    FilePropertiesDTOBuilder filePropertiesDTOBuilder;
 
     @Override
     public void configure() throws Exception {
@@ -40,11 +40,10 @@ public class SaveFileRoute extends RouteBuilder {
                 .claimCheck(ClaimCheckOperation.Pop, "body")
                 .process(fileStorageDTOBuilder)
                 .removeHeader("fileContent")
-                .setHeader("operation", simple("save"))
                 .log("${headers}")
                 .marshal().json(JsonLibrary.Jackson, FileStorageDTO.class)
                 .removeHeaders("CamelHttp*")
-                .to("http://localhost:8081/storage-service/modify-file")
+                .to("http://file.storage.service:8081/storage-service/save-file")
                 .log("Saved file with name ${header.fileName}")
                 .removeHeaders("*")
                 .setBody(constant("OK"))

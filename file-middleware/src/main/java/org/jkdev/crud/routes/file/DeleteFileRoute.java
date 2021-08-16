@@ -1,5 +1,6 @@
 package org.jkdev.crud.routes.file;
 
+import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -14,8 +15,8 @@ public class DeleteFileRoute extends RouteBuilder {
 
         from(DELETE_PDF)
                 .id("deleteFileRoute")
-                .setHeader("operation", simple("delete"))
                 .removeHeaders("CamelHttp*")
-                .to("http://localhost:8081/storage-service/modify-file");
+                .setHeader(Exchange.HTTP_METHOD, simple("DELETE"))
+                .to("http://file.storage.service:8081/storage-service/delete-file?fileIdentifier=${header.fileIdentifier}&fileOwner=${header.fileOwner}");
     }
 }

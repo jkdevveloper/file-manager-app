@@ -19,11 +19,12 @@ public class DeleteFilePropertiesRoute extends RouteBuilder {
                 .removeHeaders("CamelHttp*")
                 .setHeader(Exchange.HTTP_METHOD, simple("DELETE"))
                 .doTry()
-                    .toD("http://localhost:8082/properties-service/delete-file-properties?id=${header.id}")
-                    .to(DeleteFileRoute.DELETE_PDF)
+                    .toD("http://file.properties.service:8082/properties-service/delete-file-properties" +
+                            "?fileIdentifier=${header.fileIdentifier}&fileOwner=${header.fileOwner}")
                 .endDoTry()
                 .doCatch(HttpOperationFailedException.class)
-                    .log("Failed to delete file properties with id: ${header.id}")
+                    .log("Failed to delete file properties with fileIdentifier:" +
+                            " ${header.fileIdentifier}, for owner: ${header.fileOwner}")
                 .end()
                 .end();
     }

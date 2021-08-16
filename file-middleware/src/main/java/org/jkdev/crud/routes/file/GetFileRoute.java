@@ -29,18 +29,18 @@ public class GetFileRoute extends RouteBuilder {
                     .log("querying properties")
                     .removeHeaders("CamelHttp*")
                     .setHeader(Exchange.HTTP_METHOD, constant("GET"))
-                    .log("${headers} sending to get properties")
-                    .toD("http://localhost:8082/properties-service/get-file-properties?fileOwner=${header.owner}&fileName=${header.fileName}")
+                    .log("${headers} sending to get file properties")
+                    .toD("http://file.properties.service:8082/properties-service/get-file-properties?fileOwner=${header.owner}&fileName=${header.fileName}")
                     .process(e -> {
                         List<FilePropertiesDTO> filePropertiesDTOS = objectMapper.readValue(e.getIn().getBody(String.class), new TypeReference<>() {});
                         FilePropertiesDTO filePropertiesDTO = filePropertiesDTOS.get(0);
                         e.getIn().setHeader("fileIdentifier", filePropertiesDTO.getFileIdentifier());
                         e.getIn().setHeader("fileOwner", filePropertiesDTO.getFileOwner());
                     })
-                    .log("${headers} after get properties")
                     .removeHeaders("CamelHttp*")
+                    .setBody(constant(""))
                     .setHeader(Exchange.HTTP_METHOD, constant("GET"))
-                    .to("http://localhost:8081/storage-service/getPDFFromFTP")
+                    .toD("http://file.storage.service:8081/storage-service/get-pdf?fileIdentifier=${header.fileIdentifier}&fileOwner=${header.fileOwner}")
                     .unmarshal().json(JsonLibrary.Jackson, FileStorageDTO.class)
                     .log("${body}")
                 .end();

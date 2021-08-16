@@ -13,7 +13,7 @@ public interface FilePropertiesService {
 
     List<FilePropertiesDTO> getFilePropertiesByOwner(String fileOwner);
 
-    void deleteFilePropertiesById(Long id);
+    void deleteFileProperties(String fileIdentifier, String fileOwner);
 
     List<FilePropertiesDTO> getFileProperties(String fileName, String fileOwner, String dateUploaded, String fileIdentifier);
 
