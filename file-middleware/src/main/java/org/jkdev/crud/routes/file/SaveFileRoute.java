@@ -15,41 +15,39 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class SaveFileRoute extends RouteBuilder {
 
-    public static final String SAVE_PDF = "direct:saveFile";
+    public static final String SAVE_FILE = "direct:saveFile";
 
     @Inject
-    private FileStorageDTOBuilder FileStorageDTOBuilder;
+    FileStorageDTOBuilder fileStorageDTOBuilder;
 
     @Inject
-    private FilePropertiesDTOBuilder filePropertiesDTOBuilder;
+    FilePropertiesDTOBuilder filePropertiesDTOBuilder;
 
     @Override
     public void configure() throws Exception {
 
-        from(SAVE_PDF)
+        from(SAVE_FILE)
                 .id("saveFileRoute")
+
                 .setHeader("owner", simple("${body.owner}"))
                 .setHeader("fileContent", simple("${body.content}"))
-                .setHeader("extension", simple("${body.contentType}"))
                 .setHeader("fileName", simple("${body.fileName}"))
+
                 .claimCheck(ClaimCheckOperation.Push, "body")
                 .process(filePropertiesDTOBuilder)
                 .wireTap(SaveFilePropertiesRoute.SAVE_PDF_PROPERTIES)
                 .claimCheck(ClaimCheckOperation.Pop, "body")
-                .process(FileStorageDTOBuilder)
+                .process(fileStorageDTOBuilder)
                 .removeHeader("fileContent")
-                .setHeader("operation", simple("save"))
-                // po rest do serwisu który zapisze pliczki
                 .log("${headers}")
                 .marshal().json(JsonLibrary.Jackson, FileStorageDTO.class)
-                .to("kafka:test?brokers=localhost:9091")
+                .removeHeaders("CamelHttp*")
+                .to("http://file.storage.service:8081/storage-service/save-file")
                 .log("Saved file with name ${header.fileName}")
                 .removeHeaders("*")
                 .setBody(constant("OK"))
                 .setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("200"))
                 .end();
-
-
     }
 }

@@ -15,7 +15,7 @@ public class SaveFilePropertiesRoute extends RouteBuilder {
     public static final String SAVE_PDF_PROPERTIES = "direct:saveFileProperties";
 
     @Inject
-    private FilePropertiesDTOBuilder filePropertiesDTOBuilder;
+    FilePropertiesDTOBuilder filePropertiesDTOBuilder;
 
     @Override
     public void configure() throws Exception {
@@ -23,8 +23,10 @@ public class SaveFilePropertiesRoute extends RouteBuilder {
                 .id("saveFilePropertiesRoute")
                 .marshal().json(JsonLibrary.Jackson, FilePropertiesDTO.class)
                 .removeHeaders("CamelHttp*")
+                .removeHeader("fileContent")
+                .log("${headers}")
                 .doTry()
-                    .to("http://localhost:8082/properties-service/save-file-properties")
+                    .to("http://file.properties.service:8082/properties-service/save-file-properties")
                 .endDoTry()
                 .doCatch(HttpHostConnectException.class)
                     .log("Failed to POST data to file-properties-service, ${body}")

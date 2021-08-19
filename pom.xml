@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jkdev</groupId>
-  <artifactId>pdf-manager-app</artifactId>
+  <artifactId>file-manager-app</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <modules>
     <module>file-properties-api</module>
@@ -11,7 +11,7 @@
     <module>file-middleware</module>
     <module>file-properties-service</module>
     <module>file-storage-service</module>
-      <module>pdf-webservice</module>
+      <module>file-webservice</module>
   </modules>
   <packaging>pom</packaging>
   <properties>
