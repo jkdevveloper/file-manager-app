@@ -15,7 +15,7 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class SaveFileRoute extends RouteBuilder {
 
-    public static final String SAVE_PDF = "direct:saveFile";
+    public static final String SAVE_FILE = "direct:saveFile";
 
     @Inject
     FileStorageDTOBuilder fileStorageDTOBuilder;
@@ -26,12 +26,11 @@ public class SaveFileRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from(SAVE_PDF)
+        from(SAVE_FILE)
                 .id("saveFileRoute")
 
                 .setHeader("owner", simple("${body.owner}"))
                 .setHeader("fileContent", simple("${body.content}"))
-                .setHeader("extension", simple("${body.contentType}"))
                 .setHeader("fileName", simple("${body.fileName}"))
 
                 .claimCheck(ClaimCheckOperation.Push, "body")
@@ -50,7 +49,5 @@ public class SaveFileRoute extends RouteBuilder {
                 .setHeader(Exchange.CONTENT_TYPE, constant("application/json"))
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant("200"))
                 .end();
-
-
     }
 }

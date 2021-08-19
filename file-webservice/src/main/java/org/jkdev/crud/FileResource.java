@@ -102,7 +102,6 @@ public class FileResource {
                 fileContent.setContent(fileData);
                 fileContent.setFileName(fileName);
                 fileContent.setOwner(userInfo.getPrincipal().getName());
-                fileContent.setContentType("PDF");
 
                 fileClient.sendFile(objectMapper.writeValueAsString(fileContent));
             } catch (Exception e) {

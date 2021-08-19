@@ -15,7 +15,7 @@ public class SaveFilePropertiesRoute extends RouteBuilder {
     public static final String SAVE_PDF_PROPERTIES = "direct:saveFileProperties";
 
     @Inject
-    private FilePropertiesDTOBuilder filePropertiesDTOBuilder;
+    FilePropertiesDTOBuilder filePropertiesDTOBuilder;
 
     @Override
     public void configure() throws Exception {

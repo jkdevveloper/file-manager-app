@@ -4,7 +4,6 @@ public class FileContent {
 
     private String fileName;
     private String content;
-    private String contentType;
     private String owner;
 
     public String getOwner() {
@@ -31,20 +30,11 @@ public class FileContent {
         this.content = content;
     }
 
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
     @Override
     public String toString() {
         return "FileContent{" +
                 "fileName='" + fileName + '\'' +
                 "fileOwner='" + owner + '\'' +
-                ", contentType=" + contentType +
                 '}';
     }
 }

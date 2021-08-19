@@ -6,7 +6,7 @@ import java.util.Objects;
 public class HQLQueryBuilder {
 
     public static String buildFilePropertiesHQLFilteringQuery(String fileName, String fileOwner, String dateUploaded, String fileIdentifier){
-        StringBuilder queryBuilder = new StringBuilder("from FileProperties ");
+        StringBuilder queryBuilder = new StringBuilder("from FilePropertiesEntity ");
 
         if (Objects.nonNull(fileName) || Objects.nonNull(fileOwner) || Objects.nonNull(dateUploaded) || Objects.nonNull(fileIdentifier)) {
             queryBuilder.append("F where ");

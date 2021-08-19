@@ -630,7 +630,7 @@
     {
       "id": "d655d370-d1ba-434f-9432-3811c8d984d4",
       "clientId": "frontend",
-      "rootUrl": "http://localhost:8085",
+      "rootUrl": "http://localhost:8089",
       "baseUrl": "/index",
       "surrogateAuthRequired": false,
       "enabled": true,
@@ -640,6 +640,7 @@
         "/login",
         "/logout",
         "/postLogout",
+        "/auth",
         "*",
         "/files",
         "/*",

@@ -1,13 +1,36 @@
 version: '3'
 services:
-    pdf-webservice:
+    keycloak:
+      container_name: keycloak
+      hostname: keycloak
+      user: "1001"
+      volumes:
+        - ./realms:/opt/jboss/keycloak/imports
+      image: quay.io/keycloak/keycloak:latest
+      environment:
+        KEYCLOAK_FRONTEND_URL: http://0.0.0.0:8180/auth
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_SCHEMA: public
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: admin
+      command:
+        - "-Djboss.http.port=8180 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
+      ports:
+        - "8180:8180"
+      depends_on:
+        - postgres
+    file-webservice:
         container_name: file.webservice
         hostname: file.webservice
         build:
-          context: ./pdf-webservice
+          context: ./file-webservice
           dockerfile: ./src/main/docker/Dockerfile.jvm
         volumes:
-          - /tmp/pdf-webservice:/pdf-webservice
+          - /tmp/file-webservice:/file-webservice
         ports:
           - "8089:8089"
         restart: always
@@ -57,28 +80,6 @@ services:
           POSTGRES_DB: keycloak
           POSTGRES_USER: keycloak
           POSTGRES_PASSWORD: password
-    keycloak:
-        container_name: keycloak
-        hostname: keycloak
-        user: "1001"
-        volumes:
-          - ./realms:/opt/jboss/keycloak/imports
-        image: quay.io/keycloak/keycloak:latest
-        environment:
-          DB_VENDOR: POSTGRES
-          DB_ADDR: postgres
-          DB_DATABASE: keycloak
-          DB_USER: keycloak
-          DB_SCHEMA: public
-          DB_PASSWORD: password
-          KEYCLOAK_USER: admin
-          KEYCLOAK_PASSWORD: admin
-        command:
-          - "-Djboss.http.port=8180 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
-        ports:
-          - "8180:8180"
-        depends_on:
-          - postgres
 volumes:
   postgres_data:
     driver: local  # is already local by default

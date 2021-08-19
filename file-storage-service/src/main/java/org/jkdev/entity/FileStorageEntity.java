@@ -15,6 +15,14 @@ public class FileStorageEntity {
     private String fileOwner;
     private String fileIdentifier;
 
+    public FileStorageEntity(){}
+
+    public FileStorageEntity(String fileContent, String fileOwner, String fileIdentifier) {
+        this.fileContent = fileContent;
+        this.fileOwner = fileOwner;
+        this.fileIdentifier = fileIdentifier;
+    }
+
     @Id
     @GeneratedValue
     public Long getId(){

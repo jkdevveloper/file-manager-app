@@ -76,7 +76,7 @@
         function downloadFile(username, filename) {
             console.log("loads")
 
-            const url = 'http://localhost:8080/files/getPDF?owner=' + username + '&fileName=' + filename;
+            const url = 'http://localhost:8089/download?owner=' + username + '&fileName=' + filename;
 
             const convertBase64ToFile = (base64String, fileName) => {
                 // let mime = arr[0].match(/:(.*?);/)[1];
@@ -89,7 +89,6 @@
                 let file = new File([uint8Array], fileName);
                 return file;
             }
-
 
             fetch(url)
                 .then(function (response) {

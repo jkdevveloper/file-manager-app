@@ -12,13 +12,13 @@ public class FileStorageDTOBuilder implements Processor {
 
     @Override
     public void process(Exchange exchange) {
-        MiddlewareFileContent pdfContent = exchange.getIn().getBody(MiddlewareFileContent.class);
+        MiddlewareFileContent middlewareFileContent = exchange.getIn().getBody(MiddlewareFileContent.class);
 
         FileStorageDTO fileStorageDTO = new FileStorageDTO();
 
-        fileStorageDTO.setFileContent(pdfContent.getContent());
+        fileStorageDTO.setFileContent(middlewareFileContent.getContent());
         fileStorageDTO.setFileIdentifier(exchange.getIn().getHeader("fileIdentifier", String.class));
-        fileStorageDTO.setFileOwner(pdfContent.getOwner());
+        fileStorageDTO.setFileOwner(middlewareFileContent.getOwner());
 
         exchange.getIn().setBody(fileStorageDTO);
     }

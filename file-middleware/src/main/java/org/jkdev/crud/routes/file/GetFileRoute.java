@@ -15,7 +15,7 @@ import java.util.List;
 @ApplicationScoped
 public class GetFileRoute extends RouteBuilder {
 
-    public static final String GET_PDF = "direct:getFile";
+    public static final String GET_FILE = "direct:getFile";
 
     @Inject
     ObjectMapper objectMapper;
@@ -23,9 +23,9 @@ public class GetFileRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from(GET_PDF)
+        from(GET_FILE)
                 .id("getFileRoute")
-                .log("get PDF for owner: ${header.owner}, with name: ${header.fileName}")
+                .log("get file for owner: ${header.owner}, with name: ${header.fileName}")
                     .log("querying properties")
                     .removeHeaders("CamelHttp*")
                     .setHeader(Exchange.HTTP_METHOD, constant("GET"))

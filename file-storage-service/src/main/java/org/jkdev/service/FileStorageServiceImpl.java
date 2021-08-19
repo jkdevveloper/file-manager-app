@@ -3,6 +3,7 @@ package org.jkdev.service;
 import org.jkdev.dao.FileStorageDAO;
 import org.jkdev.entity.FileStorageEntity;
 import org.jkdev.file.storage.api.FileStorageDTO;
+import org.jkdev.mapper.FileStorageDataMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,14 +16,14 @@ class FileStorageServiceImpl implements FileStorageService {
     @Inject
     FileStorageDAO fileStorageDAO;
 
+    @Inject
+    FileStorageDataMapper fileStorageDataMapper;
+
     Logger logger = LoggerFactory.getLogger(FileStorageServiceImpl.class);
 
     @Override
     public void saveFile(FileStorageDTO fileStorageDTO) {
-        FileStorageEntity fileStorageEntity = new FileStorageEntity();
-        fileStorageEntity.setFileOwner(fileStorageDTO.getFileOwner());
-        fileStorageEntity.setFileContent(fileStorageDTO.getFileContent());
-        fileStorageEntity.setFileIdentifier(fileStorageDTO.getFileIdentifier());
+        FileStorageEntity fileStorageEntity = fileStorageDataMapper.mapDTOtoEntity(fileStorageDTO);
 
         fileStorageDAO.saveFile(fileStorageEntity);
 
@@ -33,11 +34,7 @@ class FileStorageServiceImpl implements FileStorageService {
     public FileStorageDTO getFile(String fileIdentifier, String fileOwner) {
         FileStorageEntity fileStorageEntity = fileStorageDAO.getFile(fileIdentifier, fileOwner);
 
-        FileStorageDTO fileStorageDTO = new FileStorageDTO().fileContent(fileStorageEntity.getFileContent())
-                .fileIdentifier(fileStorageEntity.getFileIdentifier())
-                .fileOwner(fileStorageEntity.getFileOwner());
-
-        return fileStorageDTO;
+        return fileStorageDataMapper.mapEntityToDTO(fileStorageEntity);
     }
 
     @Override

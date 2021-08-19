@@ -4,13 +4,23 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "FileProperties")
-public class FileProperties {
+public class FilePropertiesEntity {
 
     private Long id;
     private String fileName;
     private String fileOwner;
     private String dateUploaded;
     private String fileIdentifier;
+
+    public FilePropertiesEntity() {
+    }
+
+    public FilePropertiesEntity(String fileName, String fileOwner, String dateUploaded, String fileIdentifier) {
+        this.fileName = fileName;
+        this.fileOwner = fileOwner;
+        this.dateUploaded = dateUploaded;
+        this.fileIdentifier = fileIdentifier;
+    }
 
     @Id
     @GeneratedValue

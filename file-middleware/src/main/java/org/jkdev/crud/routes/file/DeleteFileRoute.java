@@ -8,12 +8,12 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class DeleteFileRoute extends RouteBuilder {
 
-    public static final String DELETE_PDF = "direct:deleteFile";
+    public static final String DELETE_FILE = "direct:deleteFile";
 
     @Override
     public void configure() throws Exception {
 
-        from(DELETE_PDF)
+        from(DELETE_FILE)
                 .id("deleteFileRoute")
                 .removeHeaders("CamelHttp*")
                 .setHeader(Exchange.HTTP_METHOD, simple("DELETE"))

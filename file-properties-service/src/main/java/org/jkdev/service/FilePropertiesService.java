@@ -1,6 +1,5 @@
 package org.jkdev.service;
 
-import org.jkdev.entity.FileProperties;
 import org.jkdev.file.properties.api.FilePropertiesDTO;
 
 import java.util.List;
